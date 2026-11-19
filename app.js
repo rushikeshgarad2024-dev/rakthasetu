@@ -94,7 +94,7 @@
 
   function needView() {
     return '' +
-      '<div class="live-beacon"><span class="radar-dot" aria-hidden="true"></span><span>108 / 104 — २४×७ मदत नेहमी उपलब्ध</span></div>' +
+      '<div class="live-beacon"><span class="radar-dot" aria-hidden="true"></span><span>108 हेल्पलाइन — २४×७ मदत · रक्तपेढी माहिती: १०४</span></div>' +
       '<div class="sos-strip">' +
         '<a class="sos108" href="tel:108"><b>🚑 108</b><span>रुग्णवाहिका — अपघात व वेळेवर वाहतूक</span></a>' +
         '<a class="sos104" href="tel:104"><b>☎ 104</b><span>आरोग्य सल्ला — रक्तपेढी कुठे?</span></a>' +
@@ -125,21 +125,40 @@
               '<input id="fPlace" type="text" autocomplete="off" placeholder="उदा. ग्रामीण रुग्णालय, कोपरगाव">' +
             '</div>' +
             '<div class="grid-2">' +
-              '<div class="field"><label for="fName">आपले नाव</label>' +
+              '<div class="field"><label for="fName">आपले नाव <span style="font-weight:500;color:var(--faint)">(ऐच्छिक)</span></label>' +
                 '<input id="fName" type="text" autocomplete="off" placeholder="उदा. राम ठाकरे">' +
               '</div>' +
               '<div class="field"><label for="fPhone">संपर्क नंबर <span class="req">*</span></label>' +
                 '<input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" placeholder="98xxxxxxxx" required>' +
               '</div>' +
             '</div>' +
+            '<label class="consent"><input type="checkbox" id="fConsent" checked><span>रक्तदात्यांशी संपर्कासाठी हा मोबाईल नंबर WhatsApp वर सार्वजनिक करण्यास माझी संमती आहे. फक्त उपचारापुरता नंबर साधा.</span></label>' +
             '<div class="live-pill" id="livePill" aria-live="polite"></div>' +
             '<button type="submit" class="btn btn-whatsapp">' +
               '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.4L3 21l4.8-1.2A9 9 0 1 0 12 3z"/><path d="M9.4 9.6c.6 2.1 2 3.7 4.2 4.3l1.1-1.4.9.8c-.3 1.2-1 1.8-2 1.8-2.9 0-6.7-3.9-6.7-6.8 0-1 .7-1.8 1.8-2l.9 1z"/></svg>' +
               'WhatsApp वर पाठवा' +
             '</button>' +
             '<button type="button" id="copyBtn" class="btn ghost small" style="margin-top:8px">📋 संदेश कॉपी करा</button>' +
-            '<p class="mstamp">एक मिनिटात पाठवा — जेव्हा गरज जास्त असेल</p>' +
+            '<p class="mstamp">रुग्णाजवळ असलेल्या पण फोन उचलू शकणाऱ्या नातेवाईकाचा नंबर द्या</p>' +
           '</form>' +
+        '</div>' +
+      '</div>' +
+
+      '<div class="card">' +
+        '<div class="card-head"><h2>रक्त मिळाले? सर्वांना कळवा</h2></div>' +
+        '<div class="card-body">' +
+          '<p class="mstamp" style="margin:0 0 10px;text-align:left;font-size:12px">विनंती पूर्ण झाली की १ क्लिकमध्ये शेवटचे कळवा — ग्रुपमध्ये नाहक फोन जाणे बंद. कॅशे साफ केल्यानंतरही ही बाब आपल्या मागण्यांशिवाय चालते.</p>' +
+          '<div class="grid-2">' +
+            '<div class="field"><label for="cGroup">रक्तगट</label>' +
+              '<select id="cGroup"><option value="">गट निवडा…</option>' +
+                GROUPS.map(function (g) { return '<option>' + g + '</option>'; }).join('') +
+              '</select>' +
+            '</div>' +
+            '<div class="field"><label for="cPlace">कुठे?</label>' +
+              '<input id="cPlace" type="text" autocomplete="off" placeholder="उदा. ग्रामीण रुग्णालय">' +
+            '</div>' +
+          '</div>' +
+          '<button type="button" id="closureBtn" class="btn soft small">📢 रक्त मिळाले आहे — सर्वांना कळवा</button>' +
         '</div>' +
       '</div>' +
 
@@ -176,6 +195,7 @@
       'संपर्क: ' + phone + '\n' +
       'मागणी वेळ: ' + stamp + '\n\n' +
       'रक्तदान नेहमी मोफत असते. ज्यांना शक्य असेल त्यांनी नंबरवर संपर्क करा.\n' +
+      '⚠️ रक्तदात्याला कोणतेही ऑनलाइन पैसे (UPI) देऊ नका. फक्त अधिकृत ब्लड बँकेतच शासकीय प्रक्रिया शुल्क भरावे.\n' +
       '— #रक्तसेतू कोपरगाव\n' +
       location.href.split('#')[0];
     return msg;
@@ -231,14 +251,32 @@
       }
     });
 
+    /* Stateless closure — कॅशे साफ झाली तरी चालते */
+    var closureBtn = document.getElementById('closureBtn');
+    if (closureBtn) closureBtn.addEventListener('click', function () {
+      var g = document.getElementById('cGroup').value;
+      var p = document.getElementById('cPlace').value.trim();
+      if (!g) { toast('कोणत्या गटाचे रक्त मिळाले ते निवडा'); return; }
+      var msg =
+        '✅ *रक्त मिळाले आहे!*\n\n' +
+        'रक्तगट: *' + g + '*\n' +
+        (p ? 'रुग्णालय: ' + stripCtrl(p) + '\n' : '') +
+        '\nमदत करणाऱ्या आणि संपर्क साधणाऱ्या सर्वांचे मनःपूर्वक आभार.\n' +
+        '⚠️ रक्तासाठी कधीही रक्तदात्याला पैसे दिले नाहीत/घेत नाहीत — कोण अजूनही पैसे मागितल्यास १०४ ला तक्रार करा.\n' +
+        '— #रक्तसेतू कोपरगाव\n' + location.href.split('#')[0];
+      window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+    });
+
     renderRequests();
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var group = groupInput.value;
       var phone = stripCtrl(document.getElementById('fPhone').value).replace(/\D/g, '').replace(/^91/, '');
+      var consent = document.getElementById('fConsent');
 
       if (!group) { toast('रक्तगट निवडा'); return; }
+      if (consent && !consent.checked) { toast('रक्तदात्यांशी संपर्क साधण्यास संमती आवश्यक आहे'); return; }
       if (!/^[6-9]\d{9}$/.test(phone)) { toast('कृपया वैध १० अंकी मोबाईल नंबर टाका'); return; }
 
       var msg = buildMessage();
@@ -357,7 +395,7 @@
               '<input class="elig" type="checkbox" style="width:22px;height:22px;accent-color:var(--red);flex:none">' +
               '<span class="lbl"><b style="font-weight:600;font-size:13.5px">' + esc(c) + '</b></span></label>';
           }).join('') +
-          '<div id="eligResult" class="notice green" style="margin:12px 0 0;display:none"><span aria-hidden="true">✅</span><span>तुम्ही बहुधा पात्र आहात — नजीकच्या रक्तपेढीला भेट द्या. अंतिम निर्णय ब्लड बँकेचा.</span></div>' +
+          '<div id="eligResult" class="notice green" style="margin:12px 0 0;display:none"><span aria-hidden="true">✅</span><span>स्वयं-तपासणी पूर्ण — रुग्णालयातील डॉक्टर/ब्लड बँकेचा अंतिम निर्णय.</span></div>' +
         '</div>' +
       '</div>' +
 
@@ -569,7 +607,10 @@
 
     var list = rows.map(function (h) {
       var bank = h.bank ? '<span class="badge">रक्तपेढी</span>' : '';
-      var src = h.source ? '<span style="display:block;font-size:10px;color:var(--faint);margin-top:2px">स्त्रोत: ' + esc(h.source) + '</span>' : '';
+      var srcBits = [];
+      if (h.source) srcBits.push('स्रोत: ' + h.source);
+      if (h.verified) srcBits.push('शेवटची पडताळणी: ' + h.verified);
+      var src = srcBits.length ? '<span style="display:block;font-size:10px;color:var(--faint);margin-top:2px">' + esc(srcBits.join(' · ')) + '</span>' : '';
       var real = h.tel && String(h.tel).replace(/\D/g, '').length >= 6;
       if (real) {
         return '<a class="call" href="tel:' + esc(h.tel) + '"><span class="lbl"><b>' + esc(h.name) + bank + '</b>' +

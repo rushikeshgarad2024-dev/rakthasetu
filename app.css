@@ -222,6 +222,16 @@ body {
 .field .req { color: var(--red-bright); }
 .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
+.consent {
+  display: flex; gap: 9px; align-items: flex-start;
+  font-size: 12px; color: var(--muted); line-height: 1.45;
+  margin: 0 2px 10px; cursor: pointer;
+}
+.consent input {
+  width: 18px; height: 18px; margin-top: 1px;
+  accent-color: var(--green); flex: none;
+}
+
 /* रक्तगट चिप्स — ग्लॉसी, टॅक्टाइल, रक्ताच्या थेंबासारखे */
 .chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; margin-top: 4px; }
 .chip {
