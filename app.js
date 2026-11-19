@@ -657,20 +657,30 @@
   /* ============ शेअर व इन्स्टॉल ============ */
 
   function shareApp() {
-    var payload = {
-      title: 'रक्तसेतू कोपरगाव',
-      text: 'रक्ताची गरज पडली तर — रक्तसेतू. रक्तगट पाठवा, मागणी एक मिनिटात WhatsApp वर. कोपरगावसाठी मोफत.',
-      url: location.href.split('#')[0]
-    };
+    var launchText =
+      '🩸 *रक्तसेतू — कोपरगाव (Blood Bridge)* 🩸\n' +
+      'आपत्कालीन रक्ताची गरज भासल्यास १ मिनिटात थेट मदत!\n\n' +
+      'एखाद्या रुग्णाला तातडीने रक्ताची गरज पडल्यास ३० नातेवाईकांना फोन करत बसण्याऐवजी, आता एका मिनिटात अचूक माहिती असलेला WhatsApp मेसेज तयार करा आणि ग्रुप्समध्ये पाठवा.\n\n' +
+      '✨ *वैशिष्ट्ये:*\n' +
+      '• 💯% मोफत, कोणतीही जाहिरात नाही, लॉगिन नाही.\n' +
+      '• सर्व माहिती फक्त तुमच्या फोनवरच राहते (पूर्ण गोपनीयता).\n' +
+      '• रक्तदान कधी करता येईल याचे कॅलेंडर (पुरुष: ९० दिवस / महिला: १२० दिवस).\n' +
+      '• साईनाथ रक्तपेढी (शिर्डी) चे थेट २४ तास संपर्क नंबर व रक्तगट माहिती.\n' +
+      '• इंटरनेट नसले (Offline) तरीही चालते.\n\n' +
+      '📲 *वेबसाईट लिंक:*\n' +
+      '👉 ' + location.href.split('#')[0] + '\n' +
+      '(ही लिंक तुमच्या फोनमध्ये सेव्ह ठेवा. गरजेच्या वेळी कोणाचाही जीव वाचू शकतो!)\n' +
+      '— जनहितार्थ समर्पित · #रक्तसेतू कोपरगाव';
+    var payload = { title: 'रक्तसेतू कोपरगाव', text: launchText, url: location.href.split('#')[0] };
     if (navigator.share) { navigator.share(payload).catch(function () {}); return; }
-    var url = 'https://wa.me/?text=' + encodeURIComponent(payload.text + ' ' + payload.url);
+    var shareUrl = 'https://wa.me/?text=' + encodeURIComponent(payload.text);
     if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(payload.text + ' ' + payload.url)
+      navigator.clipboard.writeText(payload.text)
         .then(function () { toast('लिंक कॉपी झाली — WhatsApp वर पाठवा'); })
-        .catch(function () { window.open(url, '_blank'); });
+        .catch(function () { window.open(shareUrl, '_blank'); });
       return;
     }
-    window.open(url, '_blank', 'noopener');
+    window.open(shareUrl, '_blank', 'noopener');
   }
 
   var installEvent = null;
