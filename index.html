@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="mr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>रक्तसेतू कोपरगाव — रक्ताची निकड व रक्तदान</title>
+<meta name="description" content="कोपरगावसाठी रक्त संपर्क: रक्ताची निकड एक मिनिटात WhatsApp वर पाठवा, रक्तदात्यांची यादी, पात्रता तपासणी, कोणत्या गटाचे रक्त कोणाला चालते आणि रुग्णालये. मोफत.">
+<meta name="theme-color" content="#991b1b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="रक्तसेतू">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="brand">
+    <img class="logo" src="icon-192.png" alt="" width="42" height="42">
+    <div class="brand-txt">
+      <h1>रक्तसेतू <span class="town">कोपरगाव</span></h1>
+      <p>तातडीच्या रक्तासाठी थेट संपर्क</p>
+    </div>
+  </div>
+  <button id="shareBtn" class="icon-btn" aria-label="ॲप शेअर करा" title="शेअर करा">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <circle cx="18" cy="5" r="3"/>
+      <circle cx="6" cy="12" r="3"/>
+      <circle cx="18" cy="19" r="3"/>
+      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+    </svg>
+  </button>
+</header>
+
+<main id="view" class="view"></main>
+
+<nav class="tabs" id="tabs" role="tablist" aria-label="मुख्य मेनू"></nav>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
