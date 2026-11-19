@@ -159,6 +159,13 @@
     var name = document.getElementById('fName').value.trim();
     var phone = stripCtrl(document.getElementById('fPhone').value).replace(/\D/g, '').replace(/^91/, '');
 
+    var stamp = '';
+    try {
+      stamp = new Date().toLocaleString('mr-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true });
+    } catch (e) {
+      stamp = new Date().toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+    }
+
     var msg =
       '🩸 *रक्ताची निकड — कोपरगाव*\n\n' +
       'रक्तगट: ' + group + '\n' +
@@ -166,7 +173,8 @@
       'कधीपर्यंत: ' + urgent + '\n' +
       (place ? 'रुग्णालय व पत्ता: ' + stripCtrl(place) + '\n' : '') +
       (name ? 'नाव: ' + stripCtrl(name) + '\n' : '') +
-      'संपर्क: ' + phone + '\n\n' +
+      'संपर्क: ' + phone + '\n' +
+      'मागणी वेळ: ' + stamp + '\n\n' +
       'रक्तदान नेहमी मोफत असते. ज्यांना शक्य असेल त्यांनी नंबरवर संपर्क करा.\n' +
       '— #रक्तसेतू कोपरगाव\n' +
       location.href.split('#')[0];

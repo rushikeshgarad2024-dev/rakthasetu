@@ -342,6 +342,9 @@ body {
 .live-pill {
   display: none;
   width: fit-content;
+  max-width: 92%;
+  word-break: break-word;
+  box-sizing: border-box;
   margin: 2px auto 12px;
   align-items: center;
   background: var(--ink);

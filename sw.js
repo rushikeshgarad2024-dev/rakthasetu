@@ -6,7 +6,7 @@
      (v2 → v3 …) — नाहीतर जुनी JS/CSS मुलांमध्येच राहील.
    ----------------------------------------------------------- */
 
-var CACHE = 'rakthasetu-v6';
+var CACHE = 'rakthasetu-v7';
 var CORE_ASSETS = [
   './',
   './index.html',
